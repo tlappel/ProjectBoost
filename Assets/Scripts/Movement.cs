@@ -10,14 +10,17 @@ public class Movement : MonoBehaviour
         STATE      - Private instance (member) variables
     */
     Rigidbody rb; //cache reference to rigidbody
-    AudioSource rockSound;
+    
+    [SerializeField] AudioClip thrustFX;
     [SerializeField] float mainThrust = 100f;
     [SerializeField] float rotationThrust = 100f;
     // Start is called before the first frame update
+
+    AudioSource audioSource;
     void Start()
     {
        rb = GetComponent<Rigidbody>();
-       rockSound = GetComponent<AudioSource>();
+       audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -33,14 +36,15 @@ public class Movement : MonoBehaviour
         {
             //Debug.Log("Pressed space, thrusting1");
             rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
-            if(!rockSound.isPlaying)
-                rockSound.Play();
+            audioSource = GetComponent<AudioSource>();
+            if(!audioSource.isPlaying)
+                audioSource.PlayOneShot(thrustFX);
             
         }
         else
         {
-            if(rockSound.isPlaying)
-                rockSound.Stop();
+            if(audioSource.isPlaying)
+                audioSource.Stop();
         }
         
     }

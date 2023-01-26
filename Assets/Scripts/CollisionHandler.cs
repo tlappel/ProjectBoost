@@ -7,6 +7,15 @@ using UnityEngine.SceneManagement;
 public class CollisionHandler : MonoBehaviour
 {
     [SerializeField] float levelLoadDelay = 2f;
+    [SerializeField] AudioClip crashFX;
+    [SerializeField] AudioClip successFX;
+
+    bool isTransitioning = false;
+    AudioSource audioSource;
+   void Start()
+    {
+       audioSource = GetComponent<AudioSource>();
+    } 
    void OnTriggerEnter(Collider other) 
    {
     if(other.gameObject.tag == "Fuel")
@@ -38,6 +47,12 @@ public class CollisionHandler : MonoBehaviour
     private void StartSuccessSequence()
     {
         //LoadNextLevel();
+       
+        if(!isTransitioning)
+        {
+            audioSource.PlayOneShot(successFX);
+            isTransitioning = true;
+        }
         GetComponent<Movement>().enabled = false;
         Invoke("LoadNextLevel",levelLoadDelay);
     }
@@ -46,6 +61,13 @@ public class CollisionHandler : MonoBehaviour
     {
         //TODO add SFX upon crash
         //TODO add particle effect upon crash
+        
+        
+        if(!isTransitioning)
+        {
+            audioSource.PlayOneShot(crashFX);
+            isTransitioning = true;
+        }
         GetComponent<Movement>().enabled = false;
         Invoke("ReloadLevel",levelLoadDelay);
     }
@@ -66,11 +88,13 @@ public class CollisionHandler : MonoBehaviour
             currentSceneIndex = 0;
              //Debug.Log("Current Scene(reset): "+currentSceneIndex);
         }
+        isTransitioning = false;
         SceneManager.LoadScene(currentSceneIndex);
    }
    void ReloadLevel()
    {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        isTransitioning = false;
         SceneManager.LoadScene(currentSceneIndex);
    }
    void ClearFuel(Collider other)
