@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    /*
+        PARAMETERS - tuning, typically set in the editor
+        CACHE      - reference for readability or speed
+        STATE      - Private instance (member) variables
+    */
     Rigidbody rb; //cache reference to rigidbody
     AudioSource rockSound;
     [SerializeField] float mainThrust = 100f;
