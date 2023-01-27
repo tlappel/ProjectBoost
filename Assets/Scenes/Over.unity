@@ -351,7 +351,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.27582183, y: -0, z: -0, w: 0.9612088}
-  m_LocalPosition: {x: -0.65, y: 26.39, z: -38}
+  m_LocalPosition: {x: -2.15, y: 33.68, z: -47.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -422,17 +422,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 723009502, guid: 55efa775e32966247b3fa7cd71d00b40, type: 3}
+      propertyPath: mainThrust
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 723009502, guid: 55efa775e32966247b3fa7cd71d00b40, type: 3}
+      propertyPath: rotationThrust
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 1773110311439051352, guid: 55efa775e32966247b3fa7cd71d00b40, type: 3}
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1773110311439051352, guid: 55efa775e32966247b3fa7cd71d00b40, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -36.5
+      value: -36.530006
       objectReference: {fileID: 0}
     - target: {fileID: 1773110311439051352, guid: 55efa775e32966247b3fa7cd71d00b40, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.67
+      value: 3.6396708
       objectReference: {fileID: 0}
     - target: {fileID: 1773110311439051352, guid: 55efa775e32966247b3fa7cd71d00b40, type: 3}
       propertyPath: m_LocalPosition.z
@@ -468,7 +476,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1773110311439051356, guid: 55efa775e32966247b3fa7cd71d00b40, type: 3}
       propertyPath: m_Name
-      value: RocketBody
+      value: Rocket
+      objectReference: {fileID: 0}
+    - target: {fileID: 4018749230402352359, guid: 55efa775e32966247b3fa7cd71d00b40, type: 3}
+      propertyPath: m_Mass
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4018749230402352359, guid: 55efa775e32966247b3fa7cd71d00b40, type: 3}
+      propertyPath: m_Constraints
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55efa775e32966247b3fa7cd71d00b40, type: 3}
