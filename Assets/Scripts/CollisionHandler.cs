@@ -9,13 +9,34 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] float levelLoadDelay = 2f;
     [SerializeField] AudioClip crashFX;
     [SerializeField] AudioClip successFX;
+    [SerializeField] ParticleSystem crashParticles;
+    [SerializeField] ParticleSystem successParticles;
 
     bool isTransitioning = false;
+    bool isCollisionDisabled = false;
     AudioSource audioSource;
    void Start()
     {
        audioSource = GetComponent<AudioSource>();
+       isTransitioning = false;
     } 
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            //Level Up!
+            LoadNextLevel();
+        }
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            ReloadLevel();
+        }
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            //Disable Collisions!
+            isCollisionDisabled = !isCollisionDisabled;
+        }
+    }
    void OnTriggerEnter(Collider other) 
    {
     if(other.gameObject.tag == "Fuel")
@@ -26,7 +47,7 @@ public class CollisionHandler : MonoBehaviour
    
    private void OnCollisionEnter(Collision other) 
    {
-    if(isTransitioning) return;
+    if(isTransitioning||isCollisionDisabled) return;
      switch (other.gameObject.tag)
      {
         case "Friendly": 
@@ -50,6 +71,7 @@ public class CollisionHandler : MonoBehaviour
         //LoadNextLevel();
         audioSource.Stop();
         audioSource.PlayOneShot(successFX);
+        successParticles.Play();
         isTransitioning = true;
         GetComponent<Movement>().enabled = false;
         Invoke("LoadNextLevel",levelLoadDelay);
@@ -57,10 +79,10 @@ public class CollisionHandler : MonoBehaviour
 
     private void StartCrashSequence()
     {
-        //TODO add SFX upon crash
-        //TODO add particle effect upon crash
+        
         audioSource.Stop();
         audioSource.PlayOneShot(crashFX);
+        crashParticles.Play();
         isTransitioning = true;
         GetComponent<Movement>().enabled = false;
         Invoke("ReloadLevel",levelLoadDelay);
@@ -68,6 +90,7 @@ public class CollisionHandler : MonoBehaviour
 
     void LoadNextLevel()
    {
+        isCollisionDisabled = false;
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         //Debug.Log("Current Scene(first part of method): "+currentSceneIndex);
         int cnt = SceneManager.sceneCount;
@@ -87,6 +110,7 @@ public class CollisionHandler : MonoBehaviour
    }
    void ReloadLevel()
    {
+        isCollisionDisabled = false;
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         isTransitioning = false;
         SceneManager.LoadScene(currentSceneIndex);
