@@ -12,6 +12,9 @@ public class Movement : MonoBehaviour
     Rigidbody rb; //cache reference to rigidbody
     
     [SerializeField] AudioClip thrustFX;
+    [SerializeField] ParticleSystem mainEngineParts;
+    [SerializeField] ParticleSystem leftThrustParts;
+    [SerializeField] ParticleSystem rightThrustParts;
     [SerializeField] float mainThrust = 100f;
     [SerializeField] float rotationThrust = 100f;
     // Start is called before the first frame update
@@ -34,34 +37,58 @@ public class Movement : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.Space))
         {
-            //Debug.Log("Pressed space, thrusting1");
-            rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
-            audioSource = GetComponent<AudioSource>();
-            if(!audioSource.isPlaying)
-                audioSource.PlayOneShot(thrustFX);
-            
+            StartThrusting();
         }
         else
         {
-            if(audioSource.isPlaying)
-                audioSource.Stop();
+            StopThrust();
         }
-        
+
     }
+
+    private void StopThrust()
+    {
+        if (audioSource.isPlaying)
+            audioSource.Stop();
+        mainEngineParts.Stop();
+    }
+
+    private void StartThrusting()
+    {
+        rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
+        audioSource = GetComponent<AudioSource>();
+        if (!audioSource.isPlaying)
+            audioSource.PlayOneShot(thrustFX);
+        if (!mainEngineParts.isPlaying)
+            mainEngineParts.Play();
+    }
+
     void ProcessRotation()
     {
         if(Input.GetKey(KeyCode.LeftArrow)||Input.GetKey(KeyCode.A))
         {
-            //Spin to the left
-            //Debug.Log("Rotate Left");
-            ApplyRotation(rotationThrust);
+            ThrustLeft();
         }
         else if(Input.GetKey(KeyCode.D)||Input.GetKey(KeyCode.RightArrow))
         {
-            //spin to the right
-            //Debug.Log("Rotate Right");
-            ApplyRotation(-rotationThrust);
+            ThrustRight();
         }
+    }
+
+    private void ThrustRight()
+    {
+        //spin to the right
+        //Debug.Log("Rotate Right");
+        ApplyRotation(-rotationThrust);
+        leftThrustParts.Play();
+    }
+
+    private void ThrustLeft()
+    {
+        //Spin to the left
+        //Debug.Log("Rotate Left");
+        ApplyRotation(rotationThrust);
+        rightThrustParts.Play();
     }
 
     void ApplyRotation(float rotationThisFrame)
